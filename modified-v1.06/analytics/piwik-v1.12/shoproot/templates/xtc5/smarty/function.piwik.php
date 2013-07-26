@@ -2,7 +2,7 @@
 
 function smarty_function_piwik($params, &$smarty) {
   
-  $url = isset($params['url']) ? $params['url'] : false;
+	$url = isset($params['url']) ? $params['url'] : false;
 	$id = isset($params['id']) ? (int)$params['id'] : false;
 	
 	if (!$url || !$id)
