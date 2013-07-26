@@ -71,6 +71,10 @@ function getPiwikTrackingUrls($url) {
 	return $urls;
 }
 
+function getPiwikProductItemSku($id, $model) {
+	return (isset($model) && !empty($model)) ? "$model" : "[id:$id]";
+}
+
 function getPiwikProductCategoriesCode($product_id) {	
 	$query = xtc_db_query(
 		"SELECT cd.categories_name name 
@@ -96,13 +100,11 @@ function getPiwikProductCategoriesCode($product_id) {
 
 function getPiwikProductItemsCode(&$products) {
 	$itemsCode = null;
-	foreach($products as $item) {
-		$sku = $item['model'];
-		if (!isset($sku) || empty($sku))
-			$sku = '[id:'.$item['id'].']';
+	foreach($products as $item) {		
 		$itemsCode .= 
 		' _paq.push([\'addEcommerceItem\', 
-			"'.$sku.'",	
+			'.getPiwikProductItemSku(
+				$item['id'], $item['model']).',	
 			"'.$item['name'].'",	
 			'.getPiwikProductCategoriesCode(
 				$item['id']).',
@@ -118,13 +120,12 @@ function getPiwikProductTrackingCode() {
 		return null;
 	$products_price = null;
 	if ($_SESSION['customers_status']['customers_status_show_price'] != '0')
-		$products_price = $product->data['products_price'];
-	$products_sku = $product->data['products_model'];
-	if (!isset($products_sku) || empty($products_sku))
-		$products_sku = '[id:'.$product->data['products_id'].']';
+		$products_price = $product->data['products_price'];	
 	return
 		' _paq.push([\'setEcommerceView\', 
-			"'.$products_sku.'",	
+			'.getPiwikProductItemSku(
+				$product->data['products_id'], 
+				$product->data['products_model']).',
 			"'.$product->data['products_name'].'",	
 			'.getPiwikProductCategoriesCode(
 				$product->data['products_id']).',
