@@ -34,7 +34,7 @@ function smarty_function_piwik($params, &$smarty) {
         s.parentNode.insertBefore(g,s);
 		})();
 		</script>
-		<noscript><p><img src="'.$urls['HTTPS'].'/piwik.php?idsite='
+		<noscript><p><img src="'.$urls['HTTP'].'/piwik.php?idsite='
 			.$id.'&rec=1" style="border:0" alt="" /></p></noscript>
 	';
 	    
@@ -86,8 +86,8 @@ function getPiwikProductCategoriesCode($product_id) {
 				AND p.products_id = ".xtc_db_input($product_id)." 
 				AND cd.language_id = ".$_SESSION['languages_id']);
 	$categories = array(); $count = 0;
-	while($categories[$count++] = xtc_db_fetch_array($query)['name']);
-	unset($categories[--$count]);
+	while ($cat = xtc_db_fetch_array($query))
+		$categories[$count++] = $cat['name'];
 	if ($count <= 0) 
 		return null;
 	$categoriesCode = '["'.$categories[0].'"';
@@ -142,12 +142,12 @@ function getPiwikCategoryTrackingCode() {
 			WHERE cd.categories_id = ".
 				xtc_db_input($current_category_id)."			
 			AND cd.language_id = ".$_SESSION['languages_id']);
-	$category = xtc_db_fetch_array($query)['name'];
+	$category = xtc_db_fetch_array($query);
 	return
 		' _paq.push([\'setEcommerceView\', 
 			productSku = false,	
 			productName = false,	
-			category = "'.$category.'"]);';
+			category = "'.$category['name'].'"]);';
 }
 
 function getPiwikCartTrackingCode() {
