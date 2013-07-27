@@ -103,8 +103,8 @@ function getPiwikProductItemsCode(&$products) {
 	foreach($products as $item) {		
 		$itemsCode .= 
 		' _paq.push([\'addEcommerceItem\', 
-			'.getPiwikProductItemSku(
-				$item['id'], $item['model']).',	
+			"'.getPiwikProductItemSku(
+				$item['id'], $item['model']).'",	
 			"'.$item['name'].'",	
 			'.getPiwikProductCategoriesCode(
 				$item['id']).',
@@ -123,9 +123,9 @@ function getPiwikProductTrackingCode() {
 		$products_price = $product->data['products_price'];	
 	return
 		' _paq.push([\'setEcommerceView\', 
-			'.getPiwikProductItemSku(
+			"'.getPiwikProductItemSku(
 				$product->data['products_id'], 
-				$product->data['products_model']).',
+				$product->data['products_model']).'",
 			"'.$product->data['products_name'].'",	
 			'.getPiwikProductCategoriesCode(
 				$product->data['products_id']).',
