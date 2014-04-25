@@ -83,7 +83,7 @@ function getPiwikProductCategoriesCode($product_id) {
 				ON p2c.products_id = p.products_id 					
 			JOIN ".TABLE_CATEGORIES_DESCRIPTION." cd 
 				ON cd.categories_id = p2c.categories_id 
-				AND p.products_id = ".xtc_db_input($product_id)." 
+				AND p.products_id = '".xtc_db_input($product_id)."'  
 				AND cd.language_id = ".$_SESSION['languages_id']);
 	$categories = array(); $count = 0;
 	while ($cat = xtc_db_fetch_array($query))
